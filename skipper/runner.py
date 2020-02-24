@@ -29,8 +29,7 @@ def _run(cmd):
 # pylint: disable=too-many-arguments
 def _run_nested(fqdn_image, environment, command, interactive, name, net, volumes, workdir, use_cache):
     cwd = os.getcwd()
-    workspace = os.path.dirname(cwd)
-    project = os.path.basename(cwd)
+    workspace = cwd
     homedir = os.path.expanduser('~')
 
     docker_cmd = ['docker', 'run']
@@ -71,7 +70,7 @@ def _run_nested(fqdn_image, environment, command, interactive, name, net, volume
     if workdir:
         docker_cmd += ['-w', workdir]
     else:
-        docker_cmd += ['-w', '%(workdir)s' % dict(workdir=os.path.join(workspace, project))]
+        docker_cmd += ['-w', workspace]
 
     docker_cmd += ['--entrypoint', '/opt/skipper/skipper-entrypoint.sh']
     docker_cmd += [fqdn_image]
